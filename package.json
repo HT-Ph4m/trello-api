@@ -2,6 +2,10 @@
   "name": "trello_api",
   "private": true,
   "version": "1.0.0",
+  "type": "module",
+  "engines": {
+    "node": "18.16.0"
+  },
   "scripts": {
     "lint": "bunx eslint src --ext js --report-unused-disable-directives --max-warnings 0",
     "clean": "rm -rf build && mkdir build",
@@ -21,10 +25,9 @@
     "@babel/node": "^7.22.10",
     "@babel/plugin-transform-runtime": "^7.22.10",
     "@babel/preset-env": "^7.22.10",
+    "@types/bun": "latest",
     "babel-plugin-module-resolver": "^5.0.0",
-    "eslint": "^8.47.0",
-    "nodemon": "^3.0.1",
-    "@types/bun": "latest"
+    "eslint": "^8.47.0"
   },
   "peerDependencies": {
     "typescript": "^5.0.0"

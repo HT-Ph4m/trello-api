@@ -1,30 +1,42 @@
+/* eslint-disable no-console */
 import express from 'express'
-// import { mapOrder } from '~/utils/sorts.js'
+import exitHook from 'async-exit-hook'
+import { CONNECT_DB, CLOSE_DB } from '~/config/mongodb'
+import { env } from '~/config/environment'
+const START_SERVER = () => {
+  const app = express()
+  const hostname = env.APP_HOST
+  const port = env.APP_PORT
 
-const app = express()
+  app.get('/', async (req, res) => {
+    res.end('<h1>Hello world!</h1>')
+  })
 
-const hostname = 'localhost'
-const port = 8017
+  app.listen(port, hostname, () => {
+    console.log(`Hi ${env.AUTH}. I am running at ${hostname}:${port}/`)
+  })
 
-app.get('/', (req, res) => {
-  // Test Absolute import mapOrder
-  // console.log(
-  //   mapOrder(
-  //     [
-  //       { id: 'id-1', name: 'One' },
-  //       { id: 'id-2', name: 'Two' },
-  //       { id: 'id-3', name: 'Three' },
-  //       { id: 'id-4', name: 'Four' },
-  //       { id: 'id-5', name: 'Five' }
-  //     ],
-  //     ['id-5', 'id-4', 'id-2', 'id-3', 'id-1'],
-  //     'id'
-  //   )
-  // )
-  res.end('<h1>Hello Viet!</h1>')
-})
+  exitHook(() => {
+    CLOSE_DB()
+  })
+}
 
-app.listen(port, hostname, () => {
-  // eslint-disable-next-line no-console
-  console.log(`Hello Trung Quan Dev, I am running at ${hostname}:${port}/`)
-})
+;(async () => {
+  try {
+    await CONNECT_DB()
+    START_SERVER()
+  } catch (error) {
+    console.error(error)
+    process.exit(0)
+  }
+})()
+
+// CONNECT_DB()
+//   .then(() => console.log('Connect to mongodb successfully'))
+//   .then(() => {
+//     START_SERVER()
+//   })
+//   .catch((err) => {
+//     console.error(err)
+//     process.exit(0)
+//   })

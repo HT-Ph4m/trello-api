@@ -10,12 +10,13 @@
     "clean": "rm -rf build && mkdir build",
     "build-babel": "bunx babel ./src -d ./build/src",
     "build": "bun run clean && bun run build-babel",
-    "production": "bun run build && bun ./build/src/server.js",
-    "dev": "bunx babel-node ./src/server.js --watch --no-warnings"
+    "production": "bun run build && cross-env BUILD_MODE=prod bun ./build/src/server.js",
+    "dev": "cross-env BUILD_MODE=dev bunx babel-node ./src/server.js --watch --no-warnings"
   },
   "dependencies": {
     "@babel/runtime": "^7.22.10",
     "async-exit-hook": "^2.0.1",
+    "cross-env": "7.0.3",
     "dotenv": "^16.4.5",
     "express": "^4.18.2",
     "http-status-codes": "^2.3.0",

@@ -1,4 +1,6 @@
+import { StatusCodes } from 'http-status-codes'
 import { boardModel } from '~/models/boardModel'
+import ApiError from '~/utils/ApiError'
 import { slugify } from '~/utils/formatters'
 
 const createNew = async (reqBody) => {
@@ -18,6 +20,20 @@ const createNew = async (reqBody) => {
   }
 }
 
+const getDetails = async (boardId) => {
+  // eslint-disable-next-line no-useless-catch
+  try {
+    const getBoard = await boardModel.getDetails(boardId)
+    if (!getBoard) {
+      throw new ApiError(StatusCodes.NOT_FOUND, 'Board not found')
+    }
+    return getBoard
+  } catch (error) {
+    throw error
+  }
+}
+
 export const boardService = {
-  createNew
+  createNew,
+  getDetails
 }

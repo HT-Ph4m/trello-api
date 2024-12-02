@@ -1,3 +1,4 @@
+import { query } from 'express'
 import { StatusCodes } from 'http-status-codes'
 import { boardService } from '~/services/boardService'
 
@@ -20,6 +21,15 @@ const update = async (req, res, next) => {
   }
 }
 
+const moveCardToDifferentColumn = async (req, res, next) => {
+  try {
+    const result = await boardService.moveCardToDifferentColumn(req.body)
+    res.status(StatusCodes.OK).json(result)
+  } catch (error) {
+    next(error)
+  }
+}
+
 const getDetails = async (req, res, next) => {
   try {
     const boardId = req.params.id
@@ -33,5 +43,6 @@ const getDetails = async (req, res, next) => {
 export const boardController = {
   newCreate,
   getDetails,
-  update
+  update,
+  moveCardToDifferentColumn
 }
